@@ -1,6 +1,7 @@
 import express from 'express'
-
 import { productsRouter } from './modules/productos/productos.routes.js'
+import { categoriesRouter } from './modules/categorias/categorias.routes.js'
+
 
 export function createApp() {
   const app = express()
@@ -16,6 +17,7 @@ export function createApp() {
   })
 
   app.use('/api/productos', productsRouter)
+  app.use('/api/categorias', categoriesRouter)
 
   app.use((request, response) => {
     response.status(404).json({

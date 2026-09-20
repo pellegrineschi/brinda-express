@@ -3,8 +3,26 @@ import {
   findActiveProductById,
 } from './productos.repository.js'
 
-export async function listProducts(_request, response) {
-  const products = await findActiveProducts()
+export async function listProducts(request, response) {
+  const categoria = request.query.categoria
+  let categoryId = null
+
+  if (categoria !== undefined) {
+    categoryId = Number(categoria)
+
+    if (
+      typeof categoria !== 'string' ||
+      !Number.isInteger(categoryId) ||
+      categoryId < 1 ||
+      categoryId > 2147483647
+    ) {
+      return response.status(400).json({
+        error: 'El ID de la categoría no es válido',
+      })
+    }
+  }
+
+  const products = await findActiveProducts(categoryId)
 
   response.status(200).json({ data: products })
 }
